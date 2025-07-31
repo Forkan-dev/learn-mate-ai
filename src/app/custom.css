@@ -1,0 +1,9 @@
+/* Custom CSS for LearnMate AI */
+
+/* Profile Edit Icon Positioning */
+.profile-edit-icon-wrapper {
+  position: absolute;
+  bottom: 1rem; /* Equivalent to Tailwind's bottom-4 */
+  right: 0.5rem; /* Equivalent to Tailwind's right-2 */
+  transform: translateX(25%) translateY(25%); /* Equivalent to Tailwind's translate-x-1/4 translate-y-1/4 */
+}

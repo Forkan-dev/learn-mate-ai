@@ -10,26 +10,29 @@ const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [theme, setTheme] = useState('light');
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     const savedTheme = localStorage.getItem('theme');
     if (savedTheme) {
       setTheme(savedTheme);
-      document.documentElement.classList.add(savedTheme);
-    } else {
-      document.documentElement.classList.add('light');
+      document.documentElement.className = savedTheme;
     }
+    setMounted(true);
   }, []);
 
   const toggleTheme = () => {
     setTheme((prevTheme) => {
       const newTheme = prevTheme === 'light' ? 'dark' : 'light';
       localStorage.setItem('theme', newTheme);
-      document.documentElement.classList.remove(prevTheme);
-      document.documentElement.classList.add(newTheme);
+      document.documentElement.className = newTheme;
       return newTheme;
     });
   };
+
+  if (!mounted) {
+    return null;
+  }
 
   return (
     <ThemeContext.Provider value={{ theme, toggleTheme }}>
