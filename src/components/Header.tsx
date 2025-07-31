@@ -11,10 +11,12 @@ const Header = () => {
   return (
     <header className="flex items-center justify-between p-4 bg-white shadow-md dark:bg-gray-800 dark:text-white">
       <div className="flex items-center">
-        <div className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center text-white">
-          <FiCpu className="w-6 h-6" />
-        </div>
-        <h1 className="ml-3 text-xl font-bold">LearnMate AI</h1>
+        <Link href="/" className="flex items-center">
+          <div className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center text-white">
+            <FiCpu className="w-6 h-6" />
+          </div>
+          <h1 className="ml-3 text-xl font-bold">LearnMate AI</h1>
+        </Link>
       </div>
       <div className="flex items-center">
         <div className="flex items-center mr-4">
@@ -26,11 +28,10 @@ const Header = () => {
           {({ open }) => (
             <>
               <Menu.Button
-                className={`p-2 rounded-full focus:outline-none ${
-                  open
-                    ? 'ring-2 ring-offset-2 ring-offset-gray-100 dark:ring-offset-gray-800 ring-blue-500'
-                    : ''
-                }`}
+                className={`p-2 rounded-full focus:outline-none ${open
+                  ? 'ring-2 ring-offset-2 ring-offset-gray-100 dark:ring-offset-gray-800 ring-blue-500'
+                  : ''
+                  }`}
               >
                 <FiUser className="w-6 h-6" />
               </Menu.Button>
