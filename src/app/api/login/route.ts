@@ -14,6 +14,7 @@ export async function POST(request: Request) {
     const token = await new SignJWT({ email: "forkan" })
       .setProtectedHeader({ alg: 'HS256' })
       .sign(secret);
+
     let formData = {
       email,
       password,
@@ -24,6 +25,7 @@ export async function POST(request: Request) {
     if (!process.env.NEXT_PUBLIC_API_BASE_URL) {
       return NextResponse.json({ error: 'API base URL is not set' }, { status: 500 });
     }
+
     const backendResponse = await fetch(backendUrl, {
       method: 'POST',
       headers: {
@@ -42,11 +44,15 @@ export async function POST(request: Request) {
     }
 
     const data = await backendResponse.json();
-    console.log('Login successful:', data);
     const userToken = data.data?.access_token || data?.token;
+    const refreshToken = data.data?.refresh_token || data?.token;
 
     if (!userToken) {
       return NextResponse.json({ error: 'Token not provided by backend' }, { status: 500 });
+    }
+
+    if (!refreshToken) {
+      return NextResponse.json({ error: 'Refresh token not provided by backend' }, { status: 500 });
     }
 
     const response = NextResponse.json({ message: 'Login successful' });
@@ -54,6 +60,13 @@ export async function POST(request: Request) {
       httpOnly: true,
       secure: process.env.NODE_ENV !== 'development',
       maxAge: 60 * 60 * 24 * 7, // 1 week
+      path: '/',
+    });
+
+    response.cookies.set('refreshToken', refreshToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV !== 'development',
+      maxAge: 60 * 60 * 24 * 30, // 1 week
       path: '/',
     });
 

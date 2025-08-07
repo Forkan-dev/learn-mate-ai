@@ -15,7 +15,6 @@ export async function middleware(request: NextRequest) {
         await jwtVerify(token, secret);
         return NextResponse.redirect(new URL('/', request.url)); // User is authenticated, redirect from auth page
       } catch (e) {
-        // Token is invalid, allow access to auth page
       }
     }
     return NextResponse.next();

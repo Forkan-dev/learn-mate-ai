@@ -42,7 +42,6 @@ export default function LoginPage() {
         },
         body: JSON.stringify({ email, password }),
       });
-      console.log('Response:', response);
 
       if (response.ok) {
         const { token } = await response.json();
@@ -51,7 +50,6 @@ export default function LoginPage() {
         router.push('/');
       } else {
         const errorData = await response.json();
-        console.error('Login error:', errorData);
         const serverErrors: { email?: string; password?: string; general?: string } = {};
 
         if (response.status === 401) {
@@ -67,7 +65,6 @@ export default function LoginPage() {
       }
     } catch (error) {
       toast.error('An unexpected error occurred. Please try again.');
-      console.error('An unexpected error occurred:', error);
     }
   };
 
