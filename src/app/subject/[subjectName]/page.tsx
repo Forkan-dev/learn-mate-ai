@@ -60,12 +60,6 @@ const SubjectPage: React.FC<SubjectPageProps> = ({ params }) => {
           {selectedTopic && (
             <div className="mt-auto pt-4 border-t border-gray-200 dark:border-gray-700 flex justify-end gap-2">
               <button
-                onClick={handleStartQuiz}
-                className="px-4 py-2 bg-blue-500 text-white rounded-full text-sm font-medium hover:bg-blue-600 transition-colors duration-200"
-              >
-                Start Quiz
-              </button>
-              <button
                 onClick={handleAskQuestion}
                 className="px-4 py-2 bg-green-500 text-white rounded-full text-sm font-medium hover:bg-green-600 transition-colors duration-200"
               >

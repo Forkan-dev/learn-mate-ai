@@ -11,8 +11,8 @@ interface CustomSelectProps {
   label: string;
   name: string;
   options: { value: string; label: string }[];
-  register: any; // From useForm
-  error: any; // From formState.errors
+  register?: any; // From useForm
+  error?: any; // From formState.errors
   currentValue: string; // To display selected value
   setValue: (name: string, value: string) => void; // To update form value
 }
@@ -68,7 +68,7 @@ const CustomSelect: React.FC<CustomSelectProps> = ({ label, name, options, regis
         </ul>
       )}
       {/* Hidden input for React Hook Form registration */}
-      <input type="hidden" {...register(name)} value={currentValue} />
+      {register && <input type="hidden" {...register(name)} value={currentValue} />}
     </div>
   );
 };

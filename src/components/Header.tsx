@@ -9,7 +9,7 @@ const Header = () => {
   const { theme, toggleTheme } = useTheme();
 
   return (
-    <header className="flex items-center justify-between p-4 bg-white shadow-md dark:bg-gray-800 dark:text-white">
+    <header className="relative z-50 flex items-center justify-between p-4 bg-white shadow-md dark:bg-gray-800 dark:text-white">
       <div className="flex items-center">
         <Link href="/" className="flex items-center">
           <div className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center text-white">

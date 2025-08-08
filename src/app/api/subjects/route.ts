@@ -33,8 +33,9 @@ const subjects = [
 
 export async function GET(req: NextRequest, res: NextResponse) {
   const token = req.cookies.get('currentUser').value;
-  const backendResponse = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/subjects`, {
+  const backendResponse = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/subjects?type=home`, {
     method: 'GET',
+    cache: 'no-store',
     headers: {
       'Authorization': `Bearer ${token}`,
       'Content-Type': 'application/json',
