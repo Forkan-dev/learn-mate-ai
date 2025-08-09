@@ -7,7 +7,7 @@ import { FiTag, FiBarChart2, FiLayout } from 'react-icons/fi';
 import Header from "@/components/Header";
 
 const sampleQuestions = {
-  mcq: [
+  "mcq": [
     {
       question: "What is the capital of France?",
       options: ["Berlin", "Madrid", "Paris", "Rome"],
