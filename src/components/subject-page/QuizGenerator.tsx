@@ -37,7 +37,7 @@ const QuizGenerator: React.FC<QuizGeneratorProps> = ({ subjectName }) => {
   ];
 
   const handleGenerateQuiz = () => {
-    setSettings({ type: quizType, difficulty, format: questionFormat });
+    setSettings({ type: quizType, difficulty, format: questionFormat, subject: subjectName, topic: subjectName });
     router.push('/quiz');
   };
 

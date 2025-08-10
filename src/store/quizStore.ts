@@ -1,10 +1,12 @@
-import {create} from 'zustand';
+import { create } from 'zustand';
 import { devtools, persist } from 'zustand/middleware';
 
 interface QuizSettings {
   type: string;
   difficulty: string;
   format: string;
+  subject: string;
+  topic: string;
 }
 
 interface QuizStore {
@@ -20,6 +22,8 @@ export const useQuizStore = create<QuizStore>()(
           type: 'Practice',
           difficulty: 'Easy',
           format: 'MCQ',
+          subject: 'Islamic Studies',
+          topic: 'Science',
         },
         setSettings: (settings) => set({ settings }),
       }),

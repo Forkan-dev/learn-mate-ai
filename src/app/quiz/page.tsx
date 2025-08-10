@@ -1,50 +1,44 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useQuizStore } from "@/store/quizStore";
 import GradientButton from "@/components/common/GradientButton";
 import { motion, AnimatePresence } from "framer-motion";
 import { FiTag, FiBarChart2, FiLayout } from 'react-icons/fi';
 import Header from "@/components/Header";
-
-const sampleQuestions = {
-  "mcq": [
-    {
-      question: "What is the capital of France?",
-      options: ["Berlin", "Madrid", "Paris", "Rome"],
-      answer: "Paris",
-    },
-    {
-      question: "What is 2 + 2?",
-      options: ["3", "4", "5", "6"],
-      answer: "4",
-    },
-  ],
-  "open-ended": [
-    {
-      question: "Explain the theory of relativity.",
-      answer: "A detailed explanation of the theory of relativity.",
-    },
-  ],
-  "true-false": [
-    {
-      question: "The sky is blue.",
-      answer: "True",
-    },
-    {
-      question: "Water boils at 90 degrees Celsius.",
-      answer: "False",
-    },
-  ],
-};
+import { RingLoader } from "react-spinners";
 
 const QuizPage = () => {
   const { settings } = useQuizStore();
+  const [questions, setQuestions] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [userAnswers, setUserAnswers] = useState<string[]>([]);
   const [showResults, setShowResults] = useState(false);
 
-  const questions = sampleQuestions[settings.format as keyof typeof sampleQuestions] || [];
   const currentQuestion = questions[currentQuestionIndex];
+
+  useEffect(() => {
+    let data = {
+      subject: settings.subject,
+      format: settings.format,
+      topic: settings.topic,
+      difficulty: settings.difficulty,
+      type: settings.type
+    }
+    fetch("/api/quiz", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ data }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        const quizData = data.data?.quiz || data.quiz || data;
+        setQuestions(quizData);
+        setLoading(false);
+      })
+  }, []);
 
   const handleNext = () => {
     if (currentQuestionIndex < questions.length - 1) {
@@ -68,6 +62,15 @@ const QuizPage = () => {
     setShowResults(true);
   };
 
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-100 dark:bg-gray-900 flex flex-col items-center justify-center">
+        <RingLoader color="#4F46E5" size={150} />
+        <p className="text-white mt-4 text-lg">Generating Quiz...</p>
+      </div>
+    )
+  }
+
   if (showResults) {
     return (
       <div className="min-h-screen bg-gray-100 dark:bg-gray-900">
@@ -83,9 +86,10 @@ const QuizPage = () => {
                     <p className="text-sm font-medium text-gray-600 dark:text-gray-400 mr-3">Your answer:</p>
                     <span
                       className={`px-3 py-1 rounded-full text-sm font-semibold ${userAnswers[index] === q.answer
-                          ? 'bg-green-100 text-green-800 dark:bg-green-900/50 dark:text-green-300'
-                          : 'bg-red-100 text-red-800 dark:bg-red-900/50 dark:text-red-300'
-                        }`}>
+                        ? 'bg-green-100 text-green-800 dark:bg-green-900/50 dark:text-green-300'
+                        : 'bg-red-100 text-red-800 dark:bg-red-900/50 dark:text-red-300'
+                        }`}
+                    >
                       {userAnswers[index]}
                     </span>
                   </div>
@@ -150,7 +154,8 @@ const QuizPage = () => {
                     <button
                       key={option}
                       onClick={() => handleAnswer(option)}
-                      className={`w-full p-4 rounded-lg text-left transition-colors ${userAnswers[currentQuestionIndex] === option ? "bg-blue-500 text-white" : "bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600"}`}>
+                      className={`w-full p-4 rounded-lg text-left transition-colors ${userAnswers[currentQuestionIndex] === option ? "bg-blue-500 text-white" : "bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600"}`}
+                    >
                       {option}
                     </button>
                   ))}
@@ -166,12 +171,14 @@ const QuizPage = () => {
                   <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
                     <button
                       onClick={() => handleAnswer("True")}
-                      className={`w-full p-6 rounded-lg transition-colors text-lg font-semibold ${userAnswers[currentQuestionIndex] === "True" ? "bg-blue-500 text-white" : "bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600"}`}>
+                      className={`w-full p-6 rounded-lg transition-colors text-lg font-semibold ${userAnswers[currentQuestionIndex] === "True" ? "bg-blue-500 text-white" : "bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600"}`}
+                    >
                       True
                     </button>
                     <button
                       onClick={() => handleAnswer("False")}
-                      className={`w-full p-6 rounded-lg transition-colors text-lg font-semibold ${userAnswers[currentQuestionIndex] === "False" ? "bg-blue-500 text-white" : "bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600"}`}>
+                      className={`w-full p-6 rounded-lg transition-colors text-lg font-semibold ${userAnswers[currentQuestionIndex] === "False" ? "bg-blue-500 text-white" : "bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600"}`}
+                    >
                       False
                     </button>
                   </div>
