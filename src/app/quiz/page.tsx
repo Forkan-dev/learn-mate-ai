@@ -3,9 +3,10 @@ import { useEffect, useState } from "react";
 import { useQuizStore } from "@/store/quizStore";
 import GradientButton from "@/components/common/GradientButton";
 import { motion, AnimatePresence } from "framer-motion";
-import { FiTag, FiBarChart2, FiLayout } from 'react-icons/fi';
+import { FiTag, FiBarChart2, FiLayout, FiHelpCircle } from 'react-icons/fi';
 import Header from "@/components/Header";
 import { RingLoader } from "react-spinners";
+import toast from "react-hot-toast";
 
 const QuizPage = () => {
   const { settings } = useQuizStore();
@@ -34,9 +35,13 @@ const QuizPage = () => {
     })
       .then((response) => response.json())
       .then((data) => {
-        const quizData = data.data?.quiz || data.quiz || data;
+        const quizData = data.data?.quiz.questions || data.quiz || data;
         setQuestions(quizData);
         setLoading(false);
+      }).catch(error => {
+        console.log(error);
+        setLoading(false);
+        toast.error('Error generating quiz. Please try again.');
       })
   }, []);
 
@@ -101,6 +106,16 @@ const QuizPage = () => {
                       </span>
                     </div>
                   )}
+
+                  <div className="mt-3 pt-3 border-t border-gray-200 dark:border-gray-600">
+                    <p className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-2 flex items-center">
+                      <FiHelpCircle className="mr-2" /> Explanation
+                    </p>
+                    <p className="text-sm text-gray-700 dark:text-gray-300">
+                      {q.explanation}
+                    </p>
+                  </div>
+
                 </div>
               ))}
             </div>

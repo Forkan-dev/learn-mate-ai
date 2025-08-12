@@ -3,7 +3,7 @@
 
 import Link from 'next/link';
 import { FiBook, FiPenTool } from 'react-icons/fi';
-import { FaFlask, FaLandmark, FaGraduationCap, FaBookOpen } from 'react-icons/fa';
+import { FaFlask, FaLandmark, FaGraduationCap, FaBookOpen, FaMosque } from 'react-icons/fa';
 import { useEffect, useState } from 'react';
 import { set } from 'zod';
 
@@ -15,6 +15,7 @@ const iconClasses = {
   FaFlask: <FaFlask className="text-white w-10 h-10" />,
   GiAncientRuins: <FiPenTool className="text-white w-10 h-10" />,
   FaBookOpen: <FaBookOpen className="text-white w-10 h-10" />,
+  FaMosque: <FaMosque className="text-white w-10 h-10" />,
 }
 const colorOptions = ['blue', 'green', 'purple', 'orange'];
 const colorClasses = {
